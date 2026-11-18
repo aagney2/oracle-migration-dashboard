@@ -1,0 +1,46 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  font-feature-settings: 'cv11', 'ss01';
+  -webkit-font-smoothing: antialiased;
+  color: #1b2330;
+  background: #f6f7f9;
+}
+
+.tnum {
+  font-variant-numeric: tabular-nums;
+}
+
+button:disabled {
+  cursor: default;
+}
+
+@media print {
+  @page {
+    size: A4 landscape;
+    margin: 12mm;
+  }
+  html,
+  body {
+    background: #fff !important;
+  }
+  .no-print {
+    display: none !important;
+  }
+  * {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  .card {
+    break-inside: avoid;
+  }
+  main {
+    padding-top: 0 !important;
+    max-width: none !important;
+  }
+  .drill {
+    text-decoration: none !important;
+  }
+}

@@ -351,6 +351,7 @@ function normalizeDefect(lead, stages, history, opt) {
       cf_script_version: rawLabel(cf.script_version),
       cf_failed_check: rawLabel(cf.failed_check),
       cf_cutover_impact: rawLabel(cf.cutover_impact),
+      cf_fix_owner: rawLabel(cf.fix_owner),
       created: istDate(lead.created_at),
     },
   }
