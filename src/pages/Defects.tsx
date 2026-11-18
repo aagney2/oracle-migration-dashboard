@@ -12,7 +12,7 @@ import { CsvButton, SearchBox, defectCsv, groupBy, useExport, useSearch } from '
 const IMPACTS = [
   { key: 'Blocking', label: 'Blocking', color: RED },
   { key: 'Non-blocking', label: 'Non-blocking', color: ACCENT },
-  { key: '', label: 'Impact not set', color: GREY },
+  { key: '', label: 'Impact not set or unrecognised', color: GREY },
 ]
 const impactKey = (d: Defect) => (d.impact === 'Blocking' || d.impact === 'Non-blocking' ? d.impact : '')
 
