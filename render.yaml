@@ -2,7 +2,9 @@ services:
   - type: web
     name: oracle-migration-cutover-readiness
     runtime: node
+    region: singapore
     plan: starter
+    # Single instance: the Kelsa data cache lives in memory.
     numInstances: 1
     buildCommand: npm install --include=dev && npm run build
     startCommand: npm start
