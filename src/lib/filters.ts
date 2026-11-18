@@ -1,4 +1,4 @@
-import { useSyncExternalStore } from 'react'
+import { useMemo, useSyncExternalStore } from 'react'
 import { istDate, normKey } from './format'
 import type { Defect, Migration } from './types'
 
@@ -75,10 +75,12 @@ const snapshot = () => window.location.pathname + window.location.search
 
 export function useLocation() {
   const loc = useSyncExternalStore(subscribe, snapshot)
-  const url = new URL(loc, window.location.origin)
-  const seg = url.pathname.replace(/^\/+|\/+$/g, '') as PagePath
-  const page: PagePath = PAGES.some((p) => p.path === seg) ? seg : 'overview'
-  return { page, filters: parseFilters(url.searchParams) }
+  return useMemo(() => {
+    const url = new URL(loc, window.location.origin)
+    const seg = url.pathname.replace(/^\/+|\/+$/g, '') as PagePath
+    const page: PagePath = PAGES.some((p) => p.path === seg) ? seg : 'overview'
+    return { page, filters: parseFilters(url.searchParams) }
+  }, [loc])
 }
 
 const validDate = (d: string | null) => (d && /^\d{4}-\d{2}-\d{2}$/.test(d) ? d : null)

@@ -1,5 +1,5 @@
 import { Download, Search } from 'lucide-react'
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { STATE_LABELS } from '../lib/config'
 import { useDashboard } from '../lib/context'
 import { downloadCsv, type CsvColumn } from '../lib/csv'
@@ -10,11 +10,22 @@ import type { Dataset, Defect, Migration } from '../lib/types'
 /** Registers the page's main table with the header's Export menu. */
 export function useExport<T>(filename: string, rows: T[], columns: CsvColumn<T>[]) {
   const { setExport } = useDashboard()
+  const latest = useRef({ rows, columns })
+  latest.current = { rows, columns }
+  // Registered once per page; the getters read the latest rows, so a page that
+  // rebuilds its row array on every render can't trigger a render loop.
   useEffect(() => {
-    setExport({ filename, rows: rows as unknown[], columns: columns as CsvColumn<unknown>[] })
+    setExport({
+      filename,
+      get rows() {
+        return latest.current.rows as unknown[]
+      },
+      get columns() {
+        return latest.current.columns as CsvColumn<unknown>[]
+      },
+    })
     return () => setExport(null)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [filename, rows, setExport])
+  }, [filename, setExport])
 }
 
 export function migrationCsv(data: Dataset): CsvColumn<Migration>[] {
